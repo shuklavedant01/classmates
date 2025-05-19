@@ -49,6 +49,7 @@ INSTALLED_APPS = [
 
 CORS_ALLOWED_ORIGINS=[
     'http://localhost:3000',
+    'https://682ba12817807b00084e95f3--superclassmates.netlify.app',
 ]
 
 MIDDLEWARE = [
