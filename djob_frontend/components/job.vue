@@ -13,6 +13,7 @@ const props = defineProps({
     }
 
 })
+    const config = useRuntimeConfig()
 
 async function deleteJob(id) {
 await $fetch(`${config.public.apiURL}/api/v1/jobs/${id}/delete/`, {
