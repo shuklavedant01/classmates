@@ -1,43 +1,49 @@
 <script setup>
-//Query
+import { ref, watch } from 'vue'
+import { useRuntimeConfig, useFetch } from '#app'
 
-let queryRef=ref('')
-let query=''
+const config = useRuntimeConfig()
 
-function performSearch(){
-    queryRef.value =query
+// Query
+let queryRef = ref('')
+let query = ''
+
+function performSearch() {
+  queryRef.value = query
 }
 
+// Categories
+const { data: jobCategories } = await useFetch(`${config.public.apiURL}/api/v1/jobs/categories`)
 
-
-//Categories
-
-let {data:jobCategories}=await useFetch('http://127.0.0.1:8000/api/v1/jobs/categories')
 let selectedCategoriesRef = ref('')
-let  selectedCategories=[]
+let selectedCategories = []
 
-function toggleCategory(id){
-    const index= selectedCategories.indexOf(id)
-
-    if(index===-1){
-        selectedCategories.push(id)
-    }else{
-        selectedCategories.splice(index,1)
-    }
-
-    
-
-    selectedCategoriesRef.value=selectedCategories.join(',')
+function toggleCategory(id) {
+  const index = selectedCategories.indexOf(id)
+  if (index === -1) {
+    selectedCategories.push(id)
+  } else {
+    selectedCategories.splice(index, 1)
+  }
+  selectedCategoriesRef.value = selectedCategories.join(',')
 }
 
-//
-let {data: jobs}=await useFetch('http://127.0.0.1:8000/api/v1/jobs/', {
-    query:{query: queryRef, categories: selectedCategoriesRef}
-})
+// Jobs data reactive to queryRef and selectedCategoriesRef changes
+const jobs = ref([])
 
+async function fetchJobs() {
+  const { data } = await useFetch(`${config.public.apiURL}/api/v1/jobs/`, {
+    query: {
+      query: queryRef.value,
+      categories: selectedCategoriesRef.value
+    }
+  })
+  jobs.value = data.value || []
+}
+
+// Watch for changes and fetch jobs accordingly
+watch([queryRef, selectedCategoriesRef], fetchJobs, { immediate: true })
 </script>
-
-
 
 <template>
     <div class="grid md:grid-cols-4 gap-3 py-10 px-6">
