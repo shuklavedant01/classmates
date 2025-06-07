@@ -1,14 +1,22 @@
 <script setup>
+import { useRoute } from 'vue-router'
+import { useRuntimeConfig, useFetch, useSeoMeta } from '#app'
+
 const route = useRoute()
+const config = useRuntimeConfig()
 
-const {data: job} = await useFetch('http://127.0.0.1:8000/api/v1/jobs/' + route.params.id + '/')
+const { data: job, pending } = await useFetch(`${config.public.apiURL}/api/v1/jobs/${route.params.id}/`)
 
-useSeoMeta({
-    title:job.value.title,
-    ogTitle: job.value.title,
-    description:job.value.description
-})
+// Set SEO meta safely after data is loaded
+if (!pending.value && job.value) {
+  useSeoMeta({
+    title: job.value.title || 'Job Details',
+    ogTitle: job.value.title || 'Job Details',
+    description: job.value.description || ''
+  })
+}
 </script>
+
 
 
 <template>
