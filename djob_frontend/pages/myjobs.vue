@@ -55,13 +55,14 @@ function deleteJob(id) {
         <div class="space-y-4">
             
             
-             <Job
+            <Job
   v-for="job in jobs"
   :key="job.id"
   :job="job" 
   :my="true"
-  @deleteJob="() => deleteJob(job.id)"
+  @deleteJob="deleteJob"
 />
+
 
 
             </div>
