@@ -39,10 +39,10 @@ async function getJobs() {
 }
 
 function deleteJob(id) {
-  console.log('id', id)
+  console.log('delete id', id)
   jobs.value = jobs.value.filter(job => job.id !== id)
 }
-</script>
+
 
 
 
