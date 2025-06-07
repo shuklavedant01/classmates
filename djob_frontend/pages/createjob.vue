@@ -44,7 +44,8 @@ async function submitForm(){
 
 
      if (errors.value.length == 0) {
-    await $fetch('http://127.0.0.1:8000/api/v1/jobs/create/',{
+    await $fetch(`${config.public.apiURL}/api/v1/jobs/create/`, {
+
         method: 'POST',
         headers: {
             'Authorization': 'token ' + userStore.user.token,
