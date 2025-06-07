@@ -45,7 +45,7 @@ await $fetch(`${config.public.apiURL}/api/v1/jobs/${id}/delete/`, {
 
                 <div>
                     <p Class="mb-2">{{job.position_location}}</p>
-                    <p>${{job.position_salary}}</p>
+                    <p>{{job.position_salary}}</p>
                 </div>
 
                 <div>
