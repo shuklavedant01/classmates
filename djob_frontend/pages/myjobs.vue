@@ -55,13 +55,13 @@ function deleteJob(id) {
             
             
              <Job
-                v-for="job in jobs"
-                :key="job.id"
-                :job="job" 
-                :my="true"
-                v-on:deleteJob="deleteJob(job.id)"
-                
-            />
+  v-for="job in jobs"
+  :key="job.id"
+  :job="job" 
+  :my="true"
+  @deleteJob="() => deleteJob(job.id)"
+/>
+
 
             </div>
 
