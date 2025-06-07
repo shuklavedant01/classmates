@@ -1,42 +1,43 @@
 <script setup>
-const router=useRouter()
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+import { useRuntimeConfig } from '#app'
 
-let email= ref('')  
-let password1=ref('')  
-let password2=ref('')   
-let errors=ref([]) 
+const router = useRouter()
+const config = useRuntimeConfig()
 
-async function submitForm(){
-    console.log('submitForm')
+let email = ref('')
+let password1 = ref('')
+let password2 = ref('')
+let errors = ref([])
 
-    errors.value=[]
+async function submitForm() {
+  console.log('submitForm')
+  errors.value = []
 
-    await $fetch('http://127.0.0.1:8000/api/v1/users/',{
-        method: 'POST',
-        body:{
-            username: email.value,
-            password: password1.value
-        }
+  await $fetch(`${config.public.apiURL}/api/v1/users/`, {
+    method: 'POST',
+    body: {
+      username: email.value,
+      password: password1.value
+    }
+  })
+    .then(response => {
+      console.log('response', response)
+      router.push({ path: '/login' })
     })
-    .then(response=>{
-        console.log('response', response)
-
-        router.push({path: '/login'})
-    })
-    .catch(error=>{
-        if (error.response) {
-            for (const property in error.response._data) {
-                errors.value.push(`${property}: ${error.response._data[property]}`)
-            }
-            console.log(JSON.stringify(error.response))
-        } else if (error.message) {
-            errors.value.push('Something went wrong. Please try again')
-            
-            console.log(JSON.stringify(error))
+    .catch(error => {
+      if (error.response) {
+        for (const property in error.response._data) {
+          errors.value.push(`${property}: ${error.response._data[property]}`)
         }
+        console.log(JSON.stringify(error.response))
+      } else if (error.message) {
+        errors.value.push('Something went wrong. Please try again')
+        console.log(JSON.stringify(error))
+      }
     })
 }
-    
 </script>
 
 
