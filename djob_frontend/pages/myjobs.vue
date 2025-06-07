@@ -1,50 +1,49 @@
 <script setup>
-import{onMounted} from'vue'
+import { onMounted, ref } from 'vue'
 import { useUserStore } from '@/stores/user'
+import { useRouter } from 'vue-router'
+import { useRuntimeConfig } from '#app'
 
-const userStore=useUserStore()
+const userStore = useUserStore()
 const router = useRouter()
+const config = useRuntimeConfig()
 let jobs = ref()
 
-
 onMounted(() => {
-    if (!userStore.user.isAuthenticated) {
-        router.push('/login')
-    } else {
-        getJobs()
-    }
+  if (!userStore.user.isAuthenticated) {
+    router.push('/login')
+  } else {
+    getJobs()
+  }
 })
 
 useSeoMeta({
-    title:'My Projects',
-    ogTitle: 'My Projects',
-    description:'The Descriptiion'
+  title: 'My Projects',
+  ogTitle: 'My Projects',
+  description: 'The Description'
 })
 
 async function getJobs() {
-    await $fetch('http://127.0.0.1:8000/api/v1/jobs/my', {
-        headers: {
-            'Authorization': 'token ' + userStore.user.token,
-            'Content-Type': 'application/json'
-        },
-    })
-    .then(response => {
-        jobs.value = response
-    })
-    .catch(error => {
-        console.log('error', error)
-    })
+  await $fetch(`${config.public.apiURL}/api/v1/jobs/my`, {
+    headers: {
+      'Authorization': 'token ' + userStore.user.token,
+      'Content-Type': 'application/json'
+    }
+  })
+  .then(response => {
+    jobs.value = response
+  })
+  .catch(error => {
+    console.log('error', error)
+  })
 }
-
 
 function deleteJob(id) {
-    console.log('id', id)
-
-    jobs.value = jobs.value.filter(job => job.id !== id)
+  console.log('id', id)
+  jobs.value = jobs.value.filter(job => job.id !== id)
 }
-
-
 </script>
+
 
 
 
