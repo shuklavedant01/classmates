@@ -1,5 +1,6 @@
 <script setup>
-const {data: jobs}=await useFetch('http://127.0.0.1:8000/api/v1/jobs/newest/')
+const config = useRuntimeConfig()
+const { data: jobs } = await useFetch(`${config.public.apiURL}/api/v1/jobs/newest/`)
 
 </script>
 
