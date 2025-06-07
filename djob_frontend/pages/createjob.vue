@@ -12,7 +12,9 @@ onMounted(() => {
     }
 })
 
-let {data:jobCategories}=await useFetch('http://127.0.0.1:8000/api/v1/jobs/categories')
+const config = useRuntimeConfig()
+let { data: jobCategories } = await useFetch(`${config.public.apiURL}/api/v1/jobs/categories`)
+
 
 let category = ref('')
 let title = ref('')
